@@ -1,0 +1,28 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "user_id": "u_abc12345",
+      "username": "hobbyuser",
+      "password": "pbkdf2_sha256$260000$dummy$7vJp6zHc0hYt2c4N9Pnp1J6d7Tf8OqZ9q9X6e5t6fFg=",
+      "plan": "HOBBY",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "user_id": "u_def67890",
+      "username": "prouser",
+      "password": "pbkdf2_sha256$260000$dummy$7vJp6zHc0hYt2c4N9Pnp1J6d7Tf8OqZ9q9X6e5t6fFg=",
+      "plan": "PRO",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true
+    }
+  }
+]
