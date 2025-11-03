@@ -3,6 +3,7 @@
     "model": "deployed_apps.deployedapp",
     "pk": 1,
     "fields": {
+      "app_id": "app_1234abcd",
       "owner": 1,
       "active": true
     }
@@ -11,6 +12,7 @@
     "model": "deployed_apps.deployedapp",
     "pk": 2,
     "fields": {
+      "app_id": "app_5678efgh",
       "owner": 2,
       "active": false
     }
@@ -19,6 +21,7 @@
     "model": "deployed_apps.deployedapp",
     "pk": 3,
     "fields": {
+      "app_id": "app_9876wxyz",
       "owner": 1,
       "active": true
     }

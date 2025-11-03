@@ -1,55 +1,55 @@
 import graphene
+from graphene import relay
 from graphene_django import DjangoObjectType
-
 from .models import User
 
 
-class UserType(DjangoObjectType):
+class UserNode(DjangoObjectType):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'plan', 'apps')
+        fields = ('user_id', 'username', 'plan')
+        interfaces = (relay.Node, )
+        name = 'User'
 
 
-class Query(graphene.ObjectType):
-    users = graphene.List(UserType)
-    user  = graphene.Field(UserType, id=graphene.Int(required=True))
-
-    def resolve_users(self, info):
-        return User.objects.all()
-
-
-    def resolve_user(self, info, id):
-        return User.objects.get(pk=id)
+    @classmethod
+    def get_node(cls, info, id):
+        try:
+            return User.objects.get(user_id=id)
+        except User.DoesNotExist:
+            return None
 
 
 class UpgradeAccount(graphene.Mutation):
-    user = graphene.Field(UserType)
-
     class Arguments:
-        id = graphene.Int(required=True)
+        user_id = graphene.String(required=True)
+
+    ok = graphene.Boolean()
+    user = graphene.Field(UserNode)
 
 
-    def mutate(self, info, id):
-        user = User.objects.get(pk=id)
+    async def mutate(root, info, user_id):
+        user = await User.objects.aget(user_id=user_id)
         user.plan = 'PRO'
-        user.save()
-        return UpgradeAccount(user=user)
+        await user.asave()
+        return UpgradeAccount(ok=True, user=user)
 
 
 class DowngradeAccount(graphene.Mutation):
-    user = graphene.Field(UserType)
-
     class Arguments:
-        id = graphene.Int(required=True)
+        user_id = graphene.String(required=True)
+
+    ok = graphene.Boolean()
+    user = graphene.Field(UserNode)
 
 
-    def mutate(self, info, id):
-        user = User.objects.get(pk=id)
+    async def mutate(root, info, user_id):
+        user = await User.objects.aget(user_id=user_id)
         user.plan = 'HOBBY'
-        user.save()
-        return DowngradeAccount(user=user)
+        await user.asave()
+        return DowngradeAccount(ok=True, user=user)
 
 
-class Mutation(graphene.ObjectType):
-    upgrade_account   = UpgradeAccount.Field()
+class UserMutation(graphene.ObjectType):
+    upgrade_account = UpgradeAccount.Field()
     downgrade_account = DowngradeAccount.Field()
