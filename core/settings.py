@@ -128,6 +128,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 GRAPHENE = {
     'SCHEMA': 'core.schema.schema',
-    'MIDDLEWARE': ['graphene_django.debug.DjangoDebugMiddleware'],
-    'ATOMIC_MUTATIONS': False,
 }

@@ -1,13 +1,17 @@
 import graphene
-from users.schema import UserQuery, UserMutation
-from deployed_apps.schema import AppQuery
+import users.schema
+import deployed_apps.schema
 
 
-class Query(UserQuery, AppQuery, graphene.ObjectType):
-    node = graphene.relay.Node.Field()
+class Query(
+    users.schema.Query,
+    deployed_apps.schema.Query,
+    graphene.ObjectType
+):
+    pass
 
 
-class Mutation(UserMutation, graphene.ObjectType):
+class Mutation(users.schema.Mutation, graphene.ObjectType):
     pass
 
 
