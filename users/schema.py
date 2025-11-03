@@ -10,6 +10,7 @@ class UserNode(DjangoObjectType):
         model = User
         fields = ("user_id", "username", "plan")
         interfaces = (relay.Node, )
+        name = 'User'
 
 
     @classmethod
