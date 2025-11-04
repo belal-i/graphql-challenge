@@ -11,10 +11,10 @@ class DeployedApp(models.Model):
     active = models.BooleanField(default=True)
 
 
-    async def asave(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         if not self.app_id:
             self.app_id = f'app_{uuid.uuid4().hex[:8]}'
-        await super().asave(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
     def __str__(self):

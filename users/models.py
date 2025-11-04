@@ -12,10 +12,10 @@ class User(AbstractUser):
     plan = models.CharField(max_length=5, choices=PLAN_CHOICES, default='HOBBY')
 
 
-    async def asave(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         if not self.user_id:
             self.user_id = f'u_{uuid.uuid4().hex[:8]}'
-        await super().asave(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
     def __str__(self):
