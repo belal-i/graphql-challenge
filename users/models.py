@@ -4,8 +4,7 @@ import uuid
 
 
 class User(AbstractUser):
-    user_id = models.CharField(max_length=64, unique=True, editable=False,
-            default=f'u_{uuid.uuid4().hex[:8]}')
+    user_id = models.CharField(max_length=64, unique=True, editable=False) 
     PLAN_CHOICES = [
         ('HOBBY', 'Hobby'),
         ('PRO', 'Pro'),

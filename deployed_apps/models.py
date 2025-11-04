@@ -4,8 +4,7 @@ import uuid
 
 
 class DeployedApp(models.Model):
-    app_id = models.CharField(max_length=64, unique=True, editable=False,
-            default=f'app_{uuid.uuid4().hex[:8]}')
+    app_id = models.CharField(max_length=64, unique=True, editable=False)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='apps'
     )
