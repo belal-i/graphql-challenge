@@ -1,18 +1,26 @@
 import graphene
-import users.schema
-import deployed_apps.schema
+from graphene import relay
+from users.models import User
+from users.schema import UserNode, UpgradeAccount, DowngradeAccount
+from deployed_apps.models import DeployedApp
+from deployed_apps.schema import AppNode
 
 
-class Query(
-    users.schema.Query,
-    deployed_apps.schema.Query,
-    graphene.ObjectType
-):
-    pass
+class Query(graphene.ObjectType):
+    node = relay.Node.Field()
+    all_users = graphene.List(UserNode)
+    all_apps  = graphene.List(AppNode)
+
+    def resolve_all_users(root, info):
+        return User.objects.all()
+
+    def resolve_all_apps(root, info):
+        return DeployedApp.objects.all()
 
 
-class Mutation(users.schema.Mutation, graphene.ObjectType):
-    pass
+class Mutation(graphene.ObjectType):
+    upgrade_account   = UpgradeAccount.Field()
+    downgrade_account = DowngradeAccount.Field()
 
 
-schema = graphene.Schema(query=Query, mutation=Mutation)
+schema = graphene.Schema(query=Query, mutation=Mutation, types=[UserNode, AppNode])

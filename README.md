@@ -13,32 +13,54 @@ a "hobby" and a "pro" plan.
 
 * Load the fixtures:
   ```
-  docker exec  -ti graphql-challenge-backend-1 python manage.py loaddata users/fixtures/users.json
-  docker exec  -ti graphql-challenge-backend-1 python manage.py loaddata deployed_apps/fixtures/apps.json
+  ./loaddata.sh
   ```
 
 * Browse to http://localhost:8000/graphql
 
+* Dealing with base64 encoding. Relay expects every Node id to be a base64 encoded string.
+  Therefore, to get the base64 encoded ID strings of a user and app from our fixture data,
+  do something like this:
+  ```
+  echo -n 'User:u_abc12345' | base64
+  ```
+  ```
+  echo -n 'App:app_1234abcd' | base64
+  ```
+  Those examples will output `VXNlcjp1X2FiYzEyMzQ1` and `QXBwOmFwcF8xMjM0YWJjZA==`
+  respectively, which we can use in the following queries.
+
 * Run some test queries:
   ```
-  {
-    users {
-      id
-      username
-      plan
-      apps {
+  query {
+    node(id: "VXNlcjp1X2FiYzEyMzQ1") {
+      ... on User {
+        userId
+        username
+        plan
+      }
+    }
+  }
+
+  ```
+
+  ```
+  query getApp {
+    node(id: "QXBwOmFwcF8xMjM0YWJjZA==") {
+      ...on App {
         id
         active
       }
     }
   }
+  
   ```
 
   ```
   mutation {
-    upgradeAccount(id: 1) {
+    upgradeAccount(userId: "u_abc12345") {
+      ok
       user {
-        id
         username
         plan
       }
@@ -56,6 +78,9 @@ a "hobby" and a "pro" plan.
   ```
 * ```
   python -m pip install -r requirements.txt
+  ```
+* ```
+  cp .env.example .env # and configure as needed
   ```
 * ```
   python manage.py migrate
