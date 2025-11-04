@@ -58,7 +58,7 @@ a "hobby" and a "pro" plan.
 
   ```
   mutation {
-    upgradeAccount(id: "VXNlcjp1X2FiYzEyMzQ1") {
+    upgradeAccount(userId: "u_abc12345") {
       ok
       user {
         username
