@@ -92,6 +92,9 @@ a "hobby" and a "pro" plan.
   python manage.py loaddata deployed_apps/fixtures/apps.json
   ```
 * ```
-  python manage.py runserver
+  python manage.py collectstatic --noinput
+  ```
+* ```
+  python -m uvicorn core.asgi:application --reload
   ```
 * Run the same queries as above.
