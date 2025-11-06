@@ -11,11 +11,11 @@ class Query(graphene.ObjectType):
     all_users = graphene.List(UserNode)
     all_apps  = graphene.List(AppNode)
 
-    def resolve_all_users(root, info):
-        return User.objects.all()
+    async def resolve_all_users(root, info):
+        return [user async for user in User.objects.all()]
 
-    def resolve_all_apps(root, info):
-        return DeployedApp.objects.all()
+    async def resolve_all_apps(root, info):
+        return [app async for app in DeployedApp.objects.all()]
 
 
 class Mutation(graphene.ObjectType):

@@ -1,6 +1,6 @@
 FROM python:3.12-slim-bullseye
 
-LABEL version="0.2.0"
+LABEL version="0.3.0-dev"
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -24,4 +24,4 @@ COPY . /app/
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && python -m uvicorn core.asgi:application --reload"]

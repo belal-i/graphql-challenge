@@ -28,10 +28,10 @@ class UpgradeAccount(graphene.Mutation):
     user = graphene.Field(UserNode)
 
 
-    def mutate(root, info, user_id):
-        user = User.objects.get(user_id=user_id)
+    async def mutate(root, info, user_id):
+        user = await User.objects.aget(user_id=user_id)
         user.plan = 'PRO'
-        user.save()
+        await user.asave()
         return UpgradeAccount(ok=True, user=user)
 
 
@@ -43,10 +43,10 @@ class DowngradeAccount(graphene.Mutation):
     user = graphene.Field(UserNode)
 
 
-    def mutate(root, info, user_id):
-        user = User.objects.get(user_id=user_id)
+    async def mutate(root, info, user_id):
+        user = await User.objects.aget(user_id=user_id)
         user.plan = 'HOBBY'
-        user.save()
+        await user.asave()
         return DowngradeAccount(ok=True, user=user)
 
 
